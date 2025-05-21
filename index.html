@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nossa História de Amor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #ff4b69;
+      --secondary-color: #ffccd5;
+      --dark-bg: #1a001a;
+      --darker-bg: #2b0b2e;
+      --text-color: #ffe6f0;
+      --highlight: #ff6b81;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, var(--dark-bg), var(--darker-bg));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      color: var(--text-color);
+      text-align: center;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      max-width: 480px;
+      width: 100%;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 204, 213, 0.1);
+    }
+
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin-bottom: 15px;
+      font-size: 2.4em;
+      color: var(--secondary-color);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .main-photo-container {
+      position: relative;
+      width: 260px;
+      height: 260px;
+      margin: 0 auto 25px;
+      perspective: 1000px;
+    }
+
+    .main-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+      border: 3px solid var(--secondary-color);
+      transition: all 0.5s ease;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+      transform-style: preserve-3d;
+    }
+
+    .main-photo:hover {
+      transform: rotateY(10deg) scale(1.03);
+      box-shadow: 0 12px 30px rgba(255, 204, 213, 0.2);
+    }
+
+    .photo-frame {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border: 2px solid var(--primary-color);
+      border-radius: 20px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .main-photo-container:hover .photo-frame {
+      opacity: 0.7;
+    }
+
+    .timer-container {
+      margin: 20px 0;
+      padding: 15px;
+      background: rgba(255, 204, 213, 0.1);
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .timer-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, 
+                  transparent, 
+                  rgba(255, 75, 105, 0.1), 
+                  transparent);
+      z-index: 0;
+      animation: shine 3s infinite;
+    }
+
+    @keyframes shine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .timer {
+      font-size: 1.3em;
+      font-weight: bold;
+      position: relative;
+      z-index: 1;
+    }
+
+    .heart {
+      font-size: 2.2em;
+      color: var(--primary-color);
+      animation: pulse 1.5s infinite;
+      margin: 15px 0;
+      text-shadow: 0 0 10px rgba(255, 75, 105, 0.5);
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 25px 0;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid var(--secondary-color);
+      opacity: 0.9;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .gallery img:hover {
+      transform: scale(1.08);
+      opacity: 1;
+      box-shadow: 0 8px 15px rgba(255, 204, 213, 0.3);
+      z-index: 10;
+    }
+
+    .message {
+      font-size: 1.1em;
+      margin: 20px 0;
+      min-height: 50px;
+      color: var(--text-color);
+      transition: all 0.6s ease-in-out;
+      padding: 15px;
+      border-radius: 10px;
+      background: rgba(255, 204, 213, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .message::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary-color), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+
+    .message.active::after {
+      transform: scaleX(1);
+    }
+
+    .spotify-link {
+      margin: 25px 0;
+      position: relative;
+    }
+
+    .spotify-link a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #1DB954;
+      color: white;
+      padding: 14px 25px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1em;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .spotify-link a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #1DB954, #1ed760);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .spotify-link a:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .spotify-link a:hover::before {
+      opacity: 1;
+    }
+
+    .spotify-link a i {
+      margin-right: 10px;
+      font-size: 1.2em;
+    }
+
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .history-btn, .love-btn {
+      padding: 14px 25px;
+      background-color: var(--primary-color);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .history-btn::after, .love-btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, var(--primary-color), var(--highlight));
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .history-btn:hover, .love-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .history-btn:hover::after, .love-btn:hover::after {
+      opacity: 1;
+    }
+
+    .historia {
+      margin: 25px 0;
+      display: none;
+      text-align: left;
+      background: rgba(255, 255, 255, 0.07);
+      padding: 25px;
+      border-radius: 15px;
+      animation: fadeIn 0.6s ease-out forwards;
+      border: 1px solid rgba(255, 204, 213, 0.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .historia h2 {
+      color: var(--secondary-color);
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 1.8em;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .historia h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+    }
+
+    .timeline {
+      list-style: none;
+      padding-left: 0;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 10px;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--primary-color), var(--highlight));
+    }
+
+    .timeline li {
+      margin-left: 10px;
+      padding-left: 25px;
+      margin-bottom: 25px;
+      position: relative;
+      animation: slideIn 0.6s ease-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(-30px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .timeline li:nth-child(1) { animation-delay: 0.1s; }
+    .timeline li:nth-child(2) { animation-delay: 0.2s; }
+    .timeline li:nth-child(3) { animation-delay: 0.3s; }
+    .timeline li:nth-child(4) { animation-delay: 0.4s; }
+
+    .timeline li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 5px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(255, 75, 105, 0.3);
+    }
+
+    .timeline .data {
+      font-weight: bold;
+      color: var(--secondary-color);
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.1em;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .timeline .data::before {
+      content: attr(data-emoji);
+      margin-right: 8px;
+      font-size: 1.2em;
+    }
+
+    .timeline p {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 12px;
+      border-radius: 8px;
+      border-left: 3px solid var(--highlight);
+    }
+
+    .love-text {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      margin: 25px 0;
+      border: 1px solid rgba(255, 204, 213, 0.1);
+    }
+
+    .love-text.active {
+      max-height: 1500px;
+      opacity: 1;
+    }
+
+    .love-content {
+      padding: 25px;
+      color: var(--text-color);
+      font-size: 1.05em;
+      line-height: 1.7;
+      text-align: left;
+    }
+
+    .love-content h2 {
+      color: var(--secondary-color);
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.8em;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .love-content h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+    }
+
+    .love-content p {
+      margin-bottom: 15px;
+      text-align: justify;
+    }
+
+    .love-content blockquote {
+      margin: 20px 0;
+      padding: 15px 20px;
+      border-left: 3px solid var(--highlight);
+      font-style: italic;
+      color: #ffd2dd;
+      background: rgba(255, 107, 129, 0.1);
+      border-radius: 0 10px 10px 0;
+      position: relative;
+    }
+
+    .love-content blockquote::before {
+      content: '"';
+      position: absolute;
+      top: -10px;
+      left: 10px;
+      font-size: 3em;
+      color: rgba(255, 107, 129, 0.2);
+      font-family: serif;
+    }
+
+    .highlight-date {
+      color: var(--secondary-color);
+      font-weight: bold;
+      background: rgba(255, 204, 213, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .milestone-counter {
+      display: flex;
+      justify-content: space-around;
+      margin: 25px 0;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .milestone-box {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 15px;
+      min-width: 120px;
+      border: 1px solid rgba(255, 204, 213, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .milestone-box:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .milestone-number {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: var(--secondary-color);
+      margin-bottom: 5px;
+    }
+
+    .milestone-label {
+      font-size: 0.9em;
+      opacity: 0.8;
+    }
+
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: var(--primary-color);
+      opacity: 0;
+      z-index: 1000;
+      animation: confetti-fall 5s linear forwards;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+        max-width: 100%;
+      }
+      
+      h1 {
+        font-size: 2em;
+      }
+      
+      .main-photo-container {
+        width: 220px;
+        height: 220px;
+      }
+      
+      .gallery img {
+        height: 100px;
+      }
+      
+      .btn-container {
+        flex-direction: column;
+      }
+      
+      .milestone-box {
+        min-width: calc(50% - 10px);
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Nossa História de Amor 💖</h1>
+
+    <div class="main-photo-container">
+      <img class="main-photo" src="img/4.jpg" alt="Foto do Casal" />
+      <div class="photo-frame"></div>
+    </div>
+    
+    <p>Estamos juntos há:</p>
+    <div class="timer-container">
+      <div class="timer" id="timer">Carregando...</div>
+    </div>
+
+<div class="spotify-link" style="margin: 10px 0 20px;">
+  <a href="#" onclick="toggleMusic(); return false;" id="musicButton">
+    <i class="fab fa-spotify"></i> Nossa Trilha Sonora
+  </a>
+  <audio id="ourSong" src="mp3/musica.mp3"></audio>
+</div>
+
+    <div class="message" id="message"></div>
+    
+    <div class="milestone-counter">
+      <div class="milestone-box">
+        <div class="milestone-number" id="days-together">0</div>
+        <div class="milestone-label">Dias juntos</div>
+      </div>
+      <div class="milestone-box">
+        <div class="milestone-number" id="hours-together">0</div>
+        <div class="milestone-label">Horas felizes</div>
+      </div>
+      <div class="milestone-box">
+        <div class="milestone-number" id="minutes-together">0</div>
+        <div class="milestone-label">Minutos especiais</div>
+      </div>
+    </div>
+
+    <div class="gallery">
+      <img src="img/2.jpg" alt="Foto 1" />
+      <img src="img/1.jpg" alt="Foto 2" />
+      <img src="img/3.jpg" alt="Foto 3" />
+      <img src="img/5.jpg" alt="Foto 4" />
+    </div>
+
+
+
+    <div class="btn-container">
+      <button class="history-btn" onclick="toggleHistoria()">
+        <i class="fas fa-book-open"></i> Nossa História
+      </button>
+      <button class="love-btn" onclick="toggleLoveText()">
+        <i class="fas fa-heart"></i> Mensagem Especial
+      </button>
+    </div>
+
+    <div class="historia" id="historia">
+      <h2>🌹 Nossa Linha do Tempo</h2>
+      <ul class="timeline">
+        <li>
+          <span class="data" data-emoji="💑">18/09/2024</span>
+          <p>Dia em que nossos caminhos se cruzaram e tudo mudou. A primeira mensagem, a primeira conversa, o início de tudo.</p>
+        </li>
+        <li>
+          <span class="data" data-emoji="💋">27/09/2024</span>
+          <p>Nosso primeiro beijo, um momento mágico que ficará gravado para sempre em nossas memórias.</p>
+        </li>
+        <li>
+          <span class="data" data-emoji="❤️">21/10/2024</span>
+          <p>O primeiro "Eu te amo" que ecoou em nossos corações e marcou o início de um amor verdadeiro.</p>
+        </li>
+        <li>
+          <span class="data" data-emoji="✨">01/01/2025</span>
+          <p>Nosso primeiro Ano Novo juntos, celebrando o amor e a união que só cresce a cada dia.</p>
+        </li>
+        <li>
+          <span class="data" data-emoji="🎂">03/01/2025</span>
+          <p>Primeiro aniversário seu que comemoramos juntos - o primeiro de muitos que celebraremos lado a lado, criando memórias especiais a cada ano.</p>
+        </li>
+        <li>
+          <span class="data" data-emoji="🌅">Futuro..</span>
+          <p>Estou ansioso por tudo que o resto de nossas vidas juntas nos reserva. Todo dia ao seu lado é o melhor dia da minha vida e mal posso esperar para viver cada novo capítulo do nosso amor.</p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="love-text" id="loveText">
+      <div class="love-content">
+        <h2>💌 Para Você, Meu Amor</h2>
+        <p>Desde <span class="highlight-date">18 de setembro de 2024</span>, quando nossos caminhos se cruzaram, minha vida ganhou um novo significado. Cada dia ao seu lado é uma bênção que agradeço ao universo.</p>
+        
+        <p>Lembro como se fosse hoje do nosso primeiro beijo em <span class="highlight-date">27 de setembro</span>, aquele momento mágico em que o mundo parecia ter parado só para nós. E então, em <span class="highlight-date">21 de outubro</span>, quando nossos corações falaram mais alto e trocamos nosso primeiro "eu te amo" - palavras que carregam todo o sentido da minha existência.</p>
+        
+        <p>Você é:</p>
+        
+        <blockquote>
+          Minha paz no caos<br />
+          Minha luz na escuridão<br />
+          Minha certeza em um mundo de incertezas<br />
+          Meu lar, não importa onde estejamos
+        </blockquote>
+        
+        <p>Nossa história é feita de momentos perfeitos - das risadas compartilhadas, dos silêncios confortáveis, dos olhares que dizem mais que mil palavras. Cada experiência ao seu lado, desde as mais simples até as mais significativas, é um tesouro que guardo com carinho no meu coração.</p>
+        
+        <p>Prometo continuar escolhendo você todos os dias, cultivando nosso amor com paciência, compreensão e muito carinho. Que possamos construir uma vida repleta de momentos especiais, superando todos os desafios juntos, de mãos dadas.</p>
+        
+        <p>Obrigado por ser você, por me amar do jeito que sou e por fazer parte da minha vida. Te amo hoje, amanhã e por toda a eternidade.</p>
+        
+        <blockquote>
+          "O amor não se vê com os olhos, mas com o coração."<br />
+          - William Shakespeare
+        </blockquote>
+        
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Configurações iniciais
+    const startDate = new Date("2025-03-18T00:00:00");
+    const firstKissDate = new Date("2025-09-27T00:00:00");
+    const firstLoveDate = new Date("2025-10-21T00:00:00");
+    
+    // Elementos DOM
+    const timerEl = document.getElementById('timer');
+    const messageEl = document.getElementById('message');
+    const daysTogetherEl = document.getElementById('days-together');
+    const hoursTogetherEl = document.getElementById('hours-together');
+    const minutesTogetherEl = document.getElementById('minutes-together');
+    
+    // Frases românticas
+    const frases = [
+      "Você é o meu para sempre.",
+      "Desde 18/03, minha vida ganhou sentido.",
+      "Seu sorriso ilumina meus dias.",
+      "Te amar é meu maior privilégio.",
+      "Nosso primeiro beijo em 27/09 foi mágico.",
+      "21/10 - dia do nosso primeiro 'eu te amo'.",
+      "Juntos somos completos.",
+      "Cada dia ao seu lado é um presente.",
+      "Nosso amor é minha maior fortuna.",
+      "Você é a resposta para todas as minhas preces."
+    ];
+    
+    // Contador de tempo juntos
+    function updateTimer() {
+      const now = new Date();
+      const diff = now - startDate;
+      
+      // Calcula dias, horas, minutos e segundos
+      const totalSeconds = Math.floor(diff / 1000);
+      const totalMinutes = Math.floor(totalSeconds / 60);
+      const totalHours = Math.floor(totalMinutes / 60);
+      const totalDays = Math.floor(totalHours / 24);
+      
+      const seconds = totalSeconds % 60;
+      const minutes = totalMinutes % 60;
+      const hours = totalHours % 24;
+      const days = totalDays;
+      
+      // Atualiza o timer
+      timerEl.textContent = `${days} dias, ${hours} horas, ${minutes} minutos e ${seconds} segundos`;
+      
+      // Atualiza os milestones
+      daysTogetherEl.textContent = days;
+      hoursTogetherEl.textContent = totalHours;
+      minutesTogetherEl.textContent = totalMinutes;
+      
+      // Verifica datas especiais
+      checkSpecialDates(now);
+    }
+    
+    // Verifica datas especiais e dispara efeitos
+    function checkSpecialDates(now) {
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      
+      // Aniversário de relacionamento (todo dia 18)
+      if (today.getDate() === 18) {
+        if (!document.body.classList.contains('anniversary')) {
+          document.body.classList.add('anniversary');
+          createConfetti();
+          showSpecialMessage("Hoje é dia 18! Mais um mês de amor e felicidade juntos! 💖");
+        }
+      } else {
+        document.body.classList.remove('anniversary');
+      }
+      
+      // Primeiro beijo (27/09)
+      if (today.getMonth() === 8 && today.getDate() === 27) { // Mês 8 = setembro
+        showSpecialMessage("Hoje é o aniversário do nosso primeiro beijo! 💋 27/09/2025 - Um momento inesquecível!");
+      }
+      
+      // Primeiro eu te amo (21/10)
+      if (today.getMonth() === 9 && today.getDate() === 21) { // Mês 9 = outubro
+        showSpecialMessage("Hoje celebramos nosso primeiro 'Eu te amo'! ❤️ 21/10/2025 - O dia em que nossos corações falaram mais alto!");
+      }
+    }
+    
+    // Cria efeito de confete
+    function createConfetti() {
+      const colors = ['#ff4b69', '#ffccd5', '#ff6b81', '#ffadc3', '#ffe6f0'];
+      
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.width = Math.random() * 10 + 5 + 'px';
+        confetti.style.height = Math.random() * 10 + 5 + 'px';
+        confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+        confetti.style.animationDelay = Math.random() * 2 + 's';
+        
+        document.body.appendChild(confetti);
+        
+        // Remove o confete após a animação
+        setTimeout(() => {
+          confetti.remove();
+        }, 5000);
+      }
+    }
+    
+    // Mostra mensagem especial
+    function showSpecialMessage(message) {
+      const specialMsg = document.createElement('div');
+      specialMsg.className = 'message special-message';
+      specialMsg.textContent = message;
+      document.querySelector('.container').insertBefore(specialMsg, messageEl.nextSibling);
+      
+      setTimeout(() => {
+        specialMsg.remove();
+      }, 10000);
+    }
+    
+    // Efeito de digitação para mensagens
+    let fraseIndex = 0;
+    
+    function mostrarFrase() {
+      const frase = frases[fraseIndex];
+      messageEl.classList.remove('active');
+      
+      setTimeout(() => {
+        messageEl.textContent = "";
+        digitarFrase(frase);
+      }, 500);
+    }
+    
+    function digitarFrase(frase) {
+      let i = 0;
+      const intervalo = setInterval(() => {
+        messageEl.textContent += frase.charAt(i);
+        i++;
+        
+        if (i === frase.length) {
+          clearInterval(intervalo);
+          messageEl.classList.add('active');
+          
+          setTimeout(() => {
+            fraseIndex = (fraseIndex + 1) % frases.length;
+            mostrarFrase();
+          }, 4000);
+        }
+      }, 50);
+    }
+    
+    // Mostrar/ocultar seções
+    function toggleHistoria() {
+      const historia = document.getElementById('historia');
+      historia.style.display = historia.style.display === 'block' ? 'none' : 'block';
+      
+      if (historia.style.display === 'block') {
+        setTimeout(() => {
+          historia.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+      }
+    }
+    
+    function toggleLoveText() {
+      const loveText = document.getElementById('loveText');
+      loveText.classList.toggle('active');
+      
+      if (loveText.classList.contains('active')) {
+        setTimeout(() => {
+          loveText.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+        createConfetti();
+      }
+    }
+    
+    // Visualizador de imagens da galeria
+    document.querySelectorAll('.gallery img').forEach(img => {
+      img.addEventListener('click', function() {
+        const modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0,0,0,0.9)';
+        modal.style.display = 'flex';
+        modal.style.justifyContent = 'center';
+        modal.style.alignItems = 'center';
+        modal.style.zIndex = '1000';
+        modal.style.cursor = 'pointer';
+        
+        const imgModal = document.createElement('img');
+        imgModal.src = this.src;
+        imgModal.alt = this.alt;
+        imgModal.style.maxWidth = '90%';
+        imgModal.style.maxHeight = '90%';
+        imgModal.style.borderRadius = '15px';
+        imgModal.style.border = '3px solid var(--secondary-color)';
+        imgModal.style.boxShadow = '0 0 30px rgba(255, 204, 213, 0.3)';
+        
+        modal.appendChild(imgModal);
+        document.body.appendChild(modal);
+        
+        // Fecha ao clicar
+        modal.addEventListener('click', () => {
+          document.body.removeChild(modal);
+        });
+        
+        // Fecha com ESC
+        document.addEventListener('keydown', function closeOnEsc(e) {
+          if (e.key === 'Escape') {
+            document.body.removeChild(modal);
+            document.removeEventListener('keydown', closeOnEsc);
+          }
+        });
+      });
+    });
+    
+    // Inicialização
+    updateTimer();
+    setInterval(updateTimer, 1000);
+    mostrarFrase();
+    
+    // Efeito de carregamento
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.body.style.opacity = '1';
+      }, 100);
+    });
+
+  // Variável para controlar o estado da música
+let isPlaying = false;
+const audioPlayer = document.getElementById('ourSong');
+
+function toggleMusic() {
+  const musicButton = document.getElementById('musicButton');
+  
+  if (isPlaying) {
+    audioPlayer.pause();
+    musicButton.innerHTML = '<i class="fab fa-spotify"></i> Nossa Trilha Sonora';
+  } else {
+    audioPlayer.play();
+    musicButton.innerHTML = '<i class="fas fa-pause"></i> Tocando Agora';
+  }
+  
+  isPlaying = !isPlaying;
+  
+  audioPlayer.onended = function() {
+    isPlaying = false;
+    musicButton.innerHTML = '<i class="fab fa-spotify"></i> Nossa Trilha Sonora';
+  };
+}
+
+// Adiciona efeito visual quando a música está tocando
+audioPlayer.addEventListener('play', function() {
+  document.getElementById('musicButton').style.boxShadow = '0 0 15px rgba(29, 185, 84, 0.7)';
+});
+
+audioPlayer.addEventListener('pause', function() {
+  document.getElementById('musicButton').style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.3)';
+});
+  </script>
+</body>
+</html>
